@@ -1,0 +1,9 @@
+{
+  "name": "create-entapex-app",
+  "version": "1.0.0",
+  "description": "A CLI to create EntApex App",
+  "bin": "./bin/cli.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
