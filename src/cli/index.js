@@ -58,8 +58,6 @@ function scafold(projectName) {
     path.join(projectDir, 'package.json'),
     JSON.stringify(projectPackageJson, null, 2)
   );
-
-  spawn.sync('npm', ['install'], { stdio: 'inherit' });
-
+  
   console.log("Congratulations! You are ready.");
 }
