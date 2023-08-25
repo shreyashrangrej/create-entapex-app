@@ -18,14 +18,24 @@ const runCommand = (command) => {
   return true;
 };
 
-rl.question("Enter the repository name: ", (repoName) => {
-  rl.close();
+const repoName = process.argv[2];
 
-  if (!repoName) {
-    console.error("Repository name is required.");
-    process.exit(1);
-  }
+if (!repoName) {
+  rl.question("Enter the repository name: ", (name) => {
+    rl.close();
 
+    if (!name) {
+      console.error("Repository name is required.");
+      process.exit(1);
+    }
+
+    cloneAndInstall(name);
+  });
+} else {
+  cloneAndInstall(repoName);
+}
+
+function cloneAndInstall(repoName) {
   const gitCheckoutCommand = `git clone --depth 1 https://github.com/shreyashrangrej/entapex-app ${repoName}`;
   const installDepsCommand = `cd ${repoName} && npm install`;
 
@@ -40,7 +50,31 @@ rl.question("Enter the repository name: ", (repoName) => {
   console.log(
     "Congratulations! You are ready. Follow the following command to start: npm run dev"
   );
-});
+}
+
+// rl.question("Enter the repository name: ", (repoName) => {
+//   rl.close();
+
+//   if (!repoName) {
+//     console.error("Repository name is required.");
+//     process.exit(1);
+//   }
+
+//   const gitCheckoutCommand = `git clone --depth 1 https://github.com/shreyashrangrej/entapex-app ${repoName}`;
+//   const installDepsCommand = `cd ${repoName} && npm install`;
+
+//   console.log(`Cloning the repository with name ${repoName}`);
+//   const checkOut = runCommand(gitCheckoutCommand);
+//   if (!checkOut) process.exit(1);
+
+//   console.log(`Installing deps for ${repoName}`);
+//   const installDeps = runCommand(installDepsCommand);
+//   if (!installDeps) process.exit(1);
+
+//   console.log(
+//     "Congratulations! You are ready. Follow the following command to start: npm run dev"
+//   );
+// });
 
 // const repoName = process.argv[2];
 // const gitCheckoutCommand = `git clone --depth 1 https://github.com/shreyashrangrej/entapex-app ${repoName}`;
