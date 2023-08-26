@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import 'esm';
+
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
