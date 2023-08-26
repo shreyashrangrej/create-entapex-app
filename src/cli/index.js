@@ -47,14 +47,14 @@ function scafold(projectName) {
   // Use path.sep to ensure the correct path separator for the current platform
   const templateDir = path.resolve(__dirname, "..", "template");
 
-  try {
-    fs.mkdirSync(templateDir); // Ensure the template directory exists
-  } catch (err) {
-    if (err.code !== "EEXIST") {
-      console.error(`Error creating template directory: ${err}`);
-      process.exit(1);
-    }
-  }
+  // try {
+  //   fs.mkdirSync(templateDir); // Ensure the template directory exists
+  // } catch (err) {
+  //   if (err.code !== "EEXIST") {
+  //     console.error(`Error creating template directory: ${err}`);
+  //     process.exit(1);
+  //   }
+  // }
 
   // Copy template files to the project directory
   try {
