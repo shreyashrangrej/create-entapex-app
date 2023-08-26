@@ -4,11 +4,6 @@ import inquirer from "inquirer";
 import path from "path";
 import fs from "fs";
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
 const projectName = process.argv[2];
 
 if (!projectName) {
