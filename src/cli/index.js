@@ -45,7 +45,7 @@ function scafold(projectName) {
 
   //Copy files from template into the created folder
   console.log(`Scafodling the project: ${projectName}`);
-  const templateDir = path.resolve(__dirname, "..", "template");
+  const templateDir = path.resolve(__dirname, "../template");
   fs.cpSync(templateDir, projectDir, { recursive: true });
   console.log(`Scafolding successful!`);
 
