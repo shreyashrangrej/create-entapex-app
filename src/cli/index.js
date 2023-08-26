@@ -4,6 +4,9 @@ import inquirer from "inquirer";
 import path from "path";
 import fs from "fs";
 
+const __filename = new URL(import.meta.url).pathname;
+const __dirname = path.dirname(__filename);
+
 const projectName = process.argv[2];
 
 if (!projectName) {
