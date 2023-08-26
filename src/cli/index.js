@@ -4,9 +4,6 @@ import inquirer from "inquirer";
 import path from "path";
 import fs from "fs";
 
-const __filename = new URL(import.meta.url).pathname;
-const __dirname = path.dirname(__filename);
-
 const projectName = process.argv[2];
 
 if (!projectName) {
@@ -36,7 +33,6 @@ if (!projectName) {
 }
 
 function scafold(projectName) {
-
   // Create Project folder
   const currentDir = process.cwd();
   const projectDir = path.resolve(currentDir, projectName);
@@ -45,7 +41,9 @@ function scafold(projectName) {
 
   //Copy files from template into the created folder
   console.log(`Scafodling the project: ${projectName}`);
-  const templateDir = path.resolve(__dirname, '..', 'template');
+  const scriptDirectory = __dirname;
+  // Construct the path to the template directory
+  const templateDir = path.join(scriptDirectory, "..", "template");
   fs.cpSync(templateDir, projectDir, { recursive: true });
   console.log(`Scafolding successful!`);
 
