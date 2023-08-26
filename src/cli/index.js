@@ -35,7 +35,7 @@ if (!projectName) {
   scafold(projectName);
 }
 
-async function scafold(projectName) {
+function scafold(projectName) {
 
   // Create Project folder
   const currentDir = process.cwd();
@@ -46,7 +46,7 @@ async function scafold(projectName) {
   //Copy files from template into the created folder
   console.log(`Scafodling the project: ${projectName}`);
   const templateDir = path.resolve(__dirname, "..", "template");
-  fs.copyFileSync(templateDir, projectDir, { recursive: true });
+  fs.cpSync(templateDir, projectDir, { recursive: true });
   console.log(`Scafolding successful!`);
 
   //rename the dot files
