@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
-const inquirer = require("inquirer");
-const path = require("path");
-const fs = require("fs");
-const spawn = require("cross-spawn");
+import inquirer from "inquirer";
+import path from "path";
+import fs from "fs";
 
 const rl = readline.createInterface({
   input: process.stdin,

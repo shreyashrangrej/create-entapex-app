@@ -5,6 +5,7 @@
   "bin": {
     "create-entapex-app": "./src/cli/index.js"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
