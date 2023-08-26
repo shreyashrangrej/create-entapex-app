@@ -44,8 +44,25 @@ function scafold(projectName) {
 
   console.log(`Scafodling the project: ${projectName}`);
 
-  const templateDir = path.resolve(__dirname, "../template");
-  fs.cpSync(templateDir, projectDir, { recursive: true });
+  // Use path.sep to ensure the correct path separator for the current platform
+  const templateDir = path.resolve(__dirname, "..", "template");
+
+  try {
+    fs.mkdirSync(templateDir); // Ensure the template directory exists
+  } catch (err) {
+    if (err.code !== "EEXIST") {
+      console.error(`Error creating template directory: ${err}`);
+      process.exit(1);
+    }
+  }
+
+  // Copy template files to the project directory
+  try {
+    fs.copyFileSync(templateDir, projectDir, { recursive: true });
+  } catch (err) {
+    console.error(`Error copying template files: ${err}`);
+    process.exit(1);
+  }
 
   console.log(`Scafolding successful!`);
 
