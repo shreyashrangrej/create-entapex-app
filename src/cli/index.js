@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const readline = require("readline");
+const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-const spawn = require('cross-spawn');
+const spawn = require("cross-spawn");
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -13,16 +13,27 @@ const rl = readline.createInterface({
 const projectName = process.argv[2];
 
 if (!projectName) {
-  rl.question("Enter the project name: ", (name) => {
-    rl.close();
-
-    if (!name) {
-      console.error("Project name is required.");
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "Enter the project name:",
+        validate: function (input) {
+          if (!input) {
+            return "Project name is required.";
+          }
+          return true;
+        },
+      },
+    ])
+    .then((answers) => {
+      scafold(answers.name);
+    })
+    .catch((error) => {
+      console.error(error);
       process.exit(1);
-    }
-
-    scafold(name);
-  });
+    });
 } else {
   scafold(projectName);
 }
@@ -32,32 +43,38 @@ function scafold(projectName) {
   const projectDir = path.resolve(currentDir, projectName);
   fs.mkdirSync(projectDir, { recursive: true });
 
+  console.log(`Project folder created with name ${projectName}`);
+
+  console.log(`Scafodling the project: ${projectName}`);
+
   const templateDir = path.resolve(__dirname, "../template");
   fs.cpSync(templateDir, projectDir, { recursive: true });
 
-  fs.renameSync(
-    path.join(projectDir, "_gitignore"),
-    path.join(projectDir, ".gitignore")
-  );
+  console.log(`Scafolding successful!`);
 
-  fs.renameSync(
-    path.join(projectDir, "_eslintrc.json"),
-    path.join(projectDir, ".eslintrc.json")
-  );
+  const filesToRename = ["_gitignore", "_eslintrc.json", "_env.example"];
 
-  fs.renameSync(
-    path.join(projectDir, "_env.example"),
-    path.join(projectDir, ".env.example")
-  );
+  filesToRename.forEach((file) => {
+    fs.renameSync(
+      path.join(projectDir, file),
+      path.join(projectDir, `.${file}`)
+    );
 
-  const projectPackageJson = require(path.join(projectDir, 'package.json'));
+    console.log(`${file} renamed to .${file}`);
+  });
+
+  console.log("Updating the package.json");
+
+  const projectPackageJson = require(path.join(projectDir, "package.json"));
 
   projectPackageJson.name = projectName;
 
   fs.writeFileSync(
-    path.join(projectDir, 'package.json'),
+    path.join(projectDir, "package.json"),
     JSON.stringify(projectPackageJson, null, 2)
   );
-  
+
+  console.log("package.json update successfully");
+
   console.log("Congratulations! You are ready.");
 }

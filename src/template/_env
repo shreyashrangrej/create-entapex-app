@@ -1,0 +1,20 @@
+# Copy the content of this file and create .env file and paste it.
+# In .env put your actual environment variables.
+
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=bhdwfbycwuieywccbaewcew54562
+
+GITHUB_CLIENT_ID=c8bb36f2fea5fbc196bf
+GITHUB_CLIENT_SECRET=a4e4081372054a6ec9abc3a700fed8f8a152825d
+
+SMTP_HOST=smtp.resend.com
+SMTP_PORT=465
+SMTP_USER=resend
+SMTP_PASSWORD=re_eD3FfABK_HaZCpg26PdC9HHeFNUiJFomE
+SMTP_SENDER=noreply@entapex.com
+
+RESEND_API=re_eD3FfABK_HaZCpg26PdC9HHeFNUiJFomE
+
+DATABASE_URL=postgres://default:U9WVXajO7hop@ep-falling-star-08599477-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb?sslmode=require
