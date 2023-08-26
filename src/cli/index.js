@@ -3,11 +3,32 @@
 import inquirer from "inquirer";
 import path from "path";
 import fs from "fs";
+import { promisify } from "util";
 
 const __filename = new URL(import.meta.url).pathname;
 const __dirname = path.dirname(__filename);
 
 const projectName = process.argv[2];
+
+const copyFile = promisify(fs.copyFile);
+const copyDir = async (src, dest) => {
+  try {
+    await fs.promises.mkdir(dest, { recursive: true });
+    const entries = await fs.promises.readdir(src, { withFileTypes: true });
+    for (const entry of entries) {
+      const srcPath = path.join(src, entry.name);
+      const destPath = path.join(dest, entry.name);
+      if (entry.isDirectory()) {
+        await copyDir(srcPath, destPath);
+      } else {
+        await copyFile(srcPath, destPath);
+      }
+    }
+  } catch (err) {
+    console.error(`Error copying template files: ${err}`);
+    process.exit(1);
+  }
+};
 
 if (!projectName) {
   inquirer
@@ -35,7 +56,7 @@ if (!projectName) {
   scafold(projectName);
 }
 
-function scafold(projectName) {
+async function scafold(projectName) {
   const currentDir = process.cwd();
   const projectDir = path.resolve(currentDir, projectName);
   fs.mkdirSync(projectDir, { recursive: true });
@@ -45,24 +66,20 @@ function scafold(projectName) {
   console.log(`Scafodling the project: ${projectName}`);
 
   // Use path.sep to ensure the correct path separator for the current platform
+  // const templateDir = path.resolve(__dirname, "..", "template");
+
+  // // Copy template files to the project directory
+  // try {
+  //   fs.copyFileSync(templateDir, projectDir, { recursive: true });
+  // } catch (err) {
+  //   console.error(`Error copying template files: ${err}`);
+  //   process.exit(1);
+  // }
+  // Use path.sep to ensure the correct path separator for the current platform
   const templateDir = path.resolve(__dirname, "..", "template");
 
-  // try {
-  //   fs.mkdirSync(templateDir); // Ensure the template directory exists
-  // } catch (err) {
-  //   if (err.code !== "EEXIST") {
-  //     console.error(`Error creating template directory: ${err}`);
-  //     process.exit(1);
-  //   }
-  // }
-
   // Copy template files to the project directory
-  try {
-    fs.copyFileSync(templateDir, projectDir, { recursive: true });
-  } catch (err) {
-    console.error(`Error copying template files: ${err}`);
-    process.exit(1);
-  }
+  await copyDir(templateDir, projectDir);
 
   console.log(`Scafolding successful!`);
 
