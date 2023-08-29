@@ -6,6 +6,9 @@
     "create-entapex-app": "./src/cli/index.js"
   },
   "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -13,5 +16,9 @@
     "cross-spawn": "^7.0.3",
     "esm": "^3.2.25",
     "inquirer": "^9.2.10"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.7",
+    "typescript": "^5.2.2"
   }
 }
