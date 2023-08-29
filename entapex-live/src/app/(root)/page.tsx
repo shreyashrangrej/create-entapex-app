@@ -11,8 +11,8 @@ export default async function Home() {
   return (
     <>
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <h1 className="text-4xl font-bold mb-2">EntApex App</h1>
-        <h2 className="text-xl text-gray-600 mb-4">
+        <h1 className="text-4xl font-bold mb-2 text-center">EntApex App</h1>
+        <h2 className="text-xl text-gray-600 mb-4 text-center">
           The Most Modern & TypeSafe Full-Stack Starter Kit for Next.js
         </h2>
         <div className="flex flex-col items-center justify-start">
@@ -28,7 +28,7 @@ export default async function Home() {
             </>
           ) : (
             <>
-              <h2 className="text-xl mb-8">User not Logged In</h2>
+              <h2 className="text-xl mb-8 text-center">User not Logged In</h2>
               <div className="flex gap-4">
                 <Link href="/public">
                   <Button>Public</Button>

@@ -14,7 +14,7 @@ interface UserAccountProps extends React.HTMLAttributes<HTMLDivElement> {
 const Profile = ({ user }: UserAccountProps) => {
   return (
     <>
-      <h2 className="text-xl mb-8">Logged in as: {user?.email}</h2>
+      <h2 className="text-xl mb-8 text-center">Logged in as: {user?.email}</h2>
       <div className="flex gap-4">
         <Link href="/public">
           <Button>Public</Button>
