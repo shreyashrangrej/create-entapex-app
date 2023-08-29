@@ -1,19 +1,22 @@
 {
   "compilerOptions": {
-    "moduleResolution": "Node",
-    "target": "ES5",
-    "sourceMap": true,
     "rootDir": "src",
     "outDir": "dist",
+    "target": "es5",
+    "lib": ["es6", "dom"],
+    "sourceMap": true,
     "allowJs": true,
+    "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "noUnusedLocals": true,
-    "lib": ["es6", "dom"],
+    "noUnusedLocals": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "templates"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "templates"
+  ]
 }
