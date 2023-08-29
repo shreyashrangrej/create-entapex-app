@@ -3,7 +3,7 @@
   "version": "1.0.26",
   "description": "A CLI to create EntApex App",
   "bin": {
-    "create-entapex-app": "./dist/index.js"
+    "create-entapex-app": "./src/index.js"
   },
   "scripts": {
     "start": "node src/index.js"
