@@ -39,8 +39,12 @@ const CHOICES = fs.readdirSync(path.join(__dirname, "../templates"));
     try {
       execSync("git init", { stdio: "inherit", cwd: tartgetPath });
       console.log(chalk.green("Git initialized."));
+
+      execSync("git add .", { stdio: "inherit", cwd: tartgetPath });
+      execSync("git commit -m 'Initial commit'", { stdio: "inherit", cwd: tartgetPath });
+      console.log(chalk.green("First commit made."));
     } catch (error) {
-      console.error(chalk.red("Git initialization failed:", error.message));
+      console.error(chalk.red("Git initialization or first commit failed:", error.message));
     }
   } else {
     console.log("You chose not to initialize Git.");
