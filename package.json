@@ -6,22 +6,16 @@
     "create-entapex-app": "./dist/index.js"
   },
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "build": "tsc"
+    "start": "node src/index.js"
   },
   
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "module",
   "dependencies": {
-    "cross-spawn": "^7.0.3",
-    "esm": "^3.2.25",
+    "@inquirer/prompts": "^3.0.4",
+    "chalk": "^5.3.0",
     "inquirer": "^9.2.10"
-  },
-  "devDependencies": {
-    "@types/inquirer": "^9.0.3",
-    "@types/node": "^20.5.7",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
   }
 }
