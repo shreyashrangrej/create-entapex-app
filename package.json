@@ -1,6 +1,6 @@
 {
   "name": "create-entapex-app",
-  "version": "1.0.32",
+  "version": "1.0.33",
   "description": "A CLI to create EntApex App",
   "bin": {
     "create-entapex-app": "./src/index.js"
