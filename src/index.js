@@ -3,8 +3,10 @@
 import fs from "fs";
 import path from "path";
 import { input, select } from "@inquirer/prompts";
+import confirm from "@inquirer/confirm";
 import { fileURLToPath } from "url";
 import chalk from "chalk";
+import { execSync } from "child_process";
 
 const CURR_DIR = process.cwd();
 
@@ -13,20 +15,57 @@ const __dirname = path.dirname(__filename);
 
 const CHOICES = fs.readdirSync(path.join(__dirname, "../templates"));
 
-const projectName = await input({ message: "Enter name of your project:" });
-const projectChoice = await select({
-  message: "Select project template:",
-  choices: CHOICES.map((choice) => ({ name: choice, value: choice })),
-});
-const templatePath = path.join(__dirname, "../templates", projectChoice);
-const tartgetPath = path.join(CURR_DIR, projectName);
+(async () => {
+  const projectName = await input({ message: "Enter name of your project:" });
+  const projectChoice = await select({
+    message: "Select project template:",
+    choices: CHOICES.map((choice) => ({ name: choice, value: choice })),
+  });
+  const templatePath = path.join(__dirname, "../templates", projectChoice);
+  const tartgetPath = path.join(CURR_DIR, projectName);
 
-createProject(tartgetPath);
-createDirectoryContents(templatePath, projectName);
-renameFiles(projectName);
-updatePackageName(projectName);
+  createProject(tartgetPath);
+  createDirectoryContents(templatePath, projectName);
+  renameFiles(projectName);
+  updatePackageName(projectName);
 
-// Create Directory
+  const initializeGit = await confirm({
+    message: "Do you want to initialize Git?",
+    initial: true,
+  });
+
+  if (initializeGit) {
+    console.log("Initializing Git...");
+    try {
+      execSync("git init", { stdio: "inherit", cwd: tartgetPath });
+      console.log(chalk.green("Git initialized."));
+    } catch (error) {
+      console.error(chalk.red("Git initialization failed:", error.message));
+    }
+  } else {
+    console.log("You chose not to initialize Git.");
+  }
+
+  // Ask whether to run npm install
+  const runNpmInstall = await confirm({
+    message: "Do you want to run 'npm install'?",
+    initial: true,
+  });
+
+  if (runNpmInstall) {
+    console.log("Running 'npm install'...");
+    try {
+      execSync("npm install", { stdio: "inherit", cwd: tartgetPath });
+      console.log(chalk.green("'npm install' completed successfully."));
+    } catch (error) {
+      console.error(chalk.red("'npm install' failed:", error.message));
+    }
+  } else {
+    console.log("You chose not to run 'npm install'.");
+  }
+
+  console.log(chalk.green("Your project is successfully setup!"));
+})();
 
 function createProject(projectPath) {
   if (fs.existsSync(projectPath)) {
