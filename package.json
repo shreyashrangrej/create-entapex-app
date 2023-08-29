@@ -3,10 +3,10 @@
   "version": "1.0.25",
   "description": "A CLI to create EntApex App",
   "bin": {
-    "create-entapex-app": "./src/cli/index.js"
+    "create-entapex-app": "./dist/index.js"
   },
-  "type": "module",
   "scripts": {
+    "start": "ts-node src/index.ts",
     "build": "tsc"
   },
   "keywords": [],
@@ -18,7 +18,9 @@
     "inquirer": "^9.2.10"
   },
   "devDependencies": {
+    "@types/inquirer": "^9.0.3",
     "@types/node": "^20.5.7",
+    "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }
 }
