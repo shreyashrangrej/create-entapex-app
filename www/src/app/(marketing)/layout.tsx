@@ -11,9 +11,9 @@ export default async function MarketingLayout({
 }: MarketingLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
-      {/* <header>
+      <header>
         <Navbar />
-      </header> */}
+      </header>
       <main className="container flex-1">{children}</main>
       <SiteFooter />
       <Background />

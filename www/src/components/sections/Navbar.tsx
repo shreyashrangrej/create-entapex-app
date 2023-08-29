@@ -1,15 +1,25 @@
+import Link from "next/link";
+import { Button } from "../ui/button";
+import { Github } from "lucide-react";
+
 const Navbar = () => {
   return (
-    <div className="container mx-auto flex justify-between items-center mt-2">
-      <nav className="flex space-x-4 items-center">
-        <a href="#" className="text-2xl font-bold text-blue-500 hover:text-blue-700 transition">EntApex</a>
-        <a href="#" className="transition">Docs</a>
-      </nav>
-      <nav>
-        <a href="#" className="text-gray-600 hover:text-gray-800 transition">GitHub</a>
-      </nav>
-    </div>
-  )
-}
+    <nav className="flex justify-between items-center p-4">
+      {/* Right side of the Navbar */}
+      <div className="flex space-x-4 ml-auto">
+        <Button variant="outline" asChild>
+          <Link href="https://github.com/shreyashrangrej/create-entapex-app" target="_blank">
+            <div className="flex items-center space-x-1">
+              <Github className="" />
+            </div>
+          </Link>
+        </Button>
+        <Button variant="secondary">
+          <Link href="https://entapex-app.vercel.app" target="_blank">Live Preview</Link>
+        </Button>
+      </div>
+    </nav>
+  );
+};
 
-export default Navbar
+export default Navbar;
