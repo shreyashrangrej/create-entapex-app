@@ -21,7 +21,7 @@ const CHOICES = fs.readdirSync(path.join(__dirname, "../templates"));
   if (!projectName) {
     // If project name is not provided as an argument, ask the user for it
     const userInput = await input({ message: "Enter name of your project:" });
-    projectName = userInput
+    projectName = userInput;
   }
   // const projectName = await input({ message: "Enter name of your project:" });
   const projectChoice = await select({
@@ -45,6 +45,13 @@ const CHOICES = fs.readdirSync(path.join(__dirname, "../templates"));
     console.log("Initializing Git...");
     try {
       execSync("git init", { stdio: "inherit", cwd: tartgetPath });
+
+      execSync("git add .", { stdio: "inherit", cwd: tartgetPath });
+      execSync(`git commit -m "Initial Commit"`, {
+        stdio: "inherit",
+        cwd: tartgetPath,
+      });
+
       console.log(chalk.green("Git initialized."));
     } catch (error) {
       console.error(chalk.red("Git initialization failed:", error.message));
