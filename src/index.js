@@ -16,7 +16,14 @@ const __dirname = path.dirname(__filename);
 const CHOICES = fs.readdirSync(path.join(__dirname, "../templates"));
 
 (async () => {
-  const projectName = await input({ message: "Enter name of your project:" });
+  let projectName = process.argv[2];
+
+  if (!projectName) {
+    // If project name is not provided as an argument, ask the user for it
+    const userInput = await input({ message: "Enter name of your project:" });
+    projectName = userInput
+  }
+  // const projectName = await input({ message: "Enter name of your project:" });
   const projectChoice = await select({
     message: "Select project template:",
     choices: CHOICES.map((choice) => ({ name: choice, value: choice })),
