@@ -22,15 +22,6 @@ const Profile = ({ user }: UserAccountProps) => {
         <Link href="/protected">
           <Button>Protected</Button>
         </Link>
-        <Button
-          onClick={async (event) => {
-            event.preventDefault();
-            await signOut();
-          }}
-        >
-          <Icons.logout className="mr-2 h-4 w-4" />
-          Logout
-        </Button>
       </div>
     </>
   );
