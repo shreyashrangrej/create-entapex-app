@@ -36,6 +36,24 @@ const CHOICES = fs.readdirSync(path.join(__dirname, "../templates"));
   renameFiles(projectName);
   updatePackageName(projectName);
 
+  // Ask whether to run npm install
+  const runNpmInstall = await confirm({
+    message: "Do you want to run 'npm install'?",
+    initial: true,
+  });
+
+  if (runNpmInstall) {
+    console.log("Running 'npm install'...");
+    try {
+      execSync("npm install", { stdio: "inherit", cwd: tartgetPath });
+      console.log(chalk.green("'npm install' completed successfully."));
+    } catch (error) {
+      console.error(chalk.red("'npm install' failed:", error.message));
+    }
+  } else {
+    console.log("You chose not to run 'npm install'.");
+  }
+
   const initializeGit = await confirm({
     message: "Do you want to initialize Git?",
     initial: true,
@@ -58,24 +76,6 @@ const CHOICES = fs.readdirSync(path.join(__dirname, "../templates"));
     }
   } else {
     console.log("You chose not to initialize Git.");
-  }
-
-  // Ask whether to run npm install
-  const runNpmInstall = await confirm({
-    message: "Do you want to run 'npm install'?",
-    initial: true,
-  });
-
-  if (runNpmInstall) {
-    console.log("Running 'npm install'...");
-    try {
-      execSync("npm install", { stdio: "inherit", cwd: tartgetPath });
-      console.log(chalk.green("'npm install' completed successfully."));
-    } catch (error) {
-      console.error(chalk.red("'npm install' failed:", error.message));
-    }
-  } else {
-    console.log("You chose not to run 'npm install'.");
   }
 
   console.log(chalk.green("Your project is successfully setup!"));
