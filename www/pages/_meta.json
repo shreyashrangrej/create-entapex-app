@@ -1,0 +1,15 @@
+{
+  "Introduction": {
+    "title": "Introduction",
+    "display": "hidden",
+    "type": "page",
+    "theme": {
+      "layout": "full",
+      "typesetting": "default"
+    }
+  },
+  "docs": {
+    "title": "Documentation",
+    "type": "page"
+  }
+}
