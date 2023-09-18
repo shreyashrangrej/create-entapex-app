@@ -1,0 +1,42 @@
+# About shadcn/ui
+
+shadcn/ui is Re-usable components built using Radix UI and Tailwind CSS. This is NOT a component library. It's a collection of re-usable components that you can copy and paste into your apps. EntApex App template comes with pre configured shadcn/ui so that you don't have to.
+
+## shadcn/ui Documentation
+
+Click [here](https://ui.shadcn.com/docs) to read more.
+
+## Files In Template
+
+`components.json` is a default config file for shadcn/ui
+
+```json filename="components.json" copy
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "default",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "src/styles/globals.css",
+    "baseColor": "slate",
+    "cssVariables": true
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils"
+  }
+}
+```
+
+`utils.ts` file exports `cn` function which helps with dynamic classname while for tailwind css.
+Click [here](https://github.com/lukeed/clsx) to read more.
+
+```ts filename="src/lib/utils.ts" copy
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+ 
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+```

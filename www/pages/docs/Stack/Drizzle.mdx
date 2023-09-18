@@ -1,4 +1,4 @@
-# Drizzle ORM
+# About Drizzle ORM
 
 Drizzle ORM is a headless TypeScript ORM with a head. It is the only ORM with both relational and SQL-like query APIs providing you best of both worlds when it comes to accessing your relational data. Drizzle is lightweight, performant, typesafe, non lactose, gluten-free, flexible and serverless-ready by design.
 
@@ -10,7 +10,7 @@ Click [here](https://orm.drizzle.team/docs/overview) to read more.
 
 ## Files In Template
 
-1. Standard Drizzle ORM config files that comes along with the tempalte.
+`drizzle.config.ts` is Standard Drizzle ORM config files that comes along with the tempalte.
 
 ```ts filename="drizzle.config.ts" copy
 import type { Config } from "drizzle-kit";
@@ -24,7 +24,7 @@ export default {
   driver: "pg",
 } satisfies Config;
 ```
-2. ORM Client is initialized in index.ts
+`index.ts` is query ORM Client for Drizzle
 
 ```ts filename="src/lib/db/index.ts" copy
 import { drizzle } from "drizzle-orm/postgres-js";
@@ -35,7 +35,7 @@ import { env } from "@/env.mjs";
 const client = postgres(env.DATABASE_URL);
 export const db = drizzle(client, { schema });
 ```
-3. Schema File is where all your database schemas goes.
+`schema.ts` file is where all your database schemas goes.
 
 ```ts filename="src/lib/db/schema.ts"
 import {
@@ -98,7 +98,7 @@ export const verificationTokens = pgTable(
 );
 ```
 
-4. migrate.ts is a stand alone file to migrate the SQL migrations to database
+`migrate.ts` is a stand alone file to migrate the SQL migrations to database
 
 ```ts filename="src/lib/db/migrate.ts" copy
 import { migrate } from "drizzle-orm/postgres-js/migrator";

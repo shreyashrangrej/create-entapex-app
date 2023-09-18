@@ -1,0 +1,92 @@
+# About NextAuth.js
+
+NextAuth.js is a complete open-source authentication solution for Next.js applications.
+It is designed from the ground up to support Next.js and Serverless.
+
+## NextAuth.js Documentation
+
+Click [here](https://next-auth.js.org/) to read more.
+
+## Files In Template
+
+`auth.ts` is the main entry point for authentication in your Next.js application, here you can configure auth providers and database adapter. 
+
+```ts filename="src/lib/auth.ts" copy
+import { NextAuthOptions } from "next-auth";
+import GitHubProvider from "next-auth/providers/github";
+import DiscordProvider from "next-auth/providers/discord";
+import GoogleProvider from "next-auth/providers/google";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import EmailProvider from "next-auth/providers/email";
+import { db } from "@/lib/db";
+import * as schema from "@/lib/db/schema";
+
+import { env } from "@/env.mjs";
+
+export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
+  pages: {
+    signIn: "/login",
+  },
+  adapter: DrizzleAdapter(db) as any,
+  providers: [
+    GitHubProvider({
+      clientId: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
+    }),
+    DiscordProvider({
+      clientId: env.DISCORD_CLIENT_ID,
+      clientSecret: env.DISCORD_CLIENT_SECRET,
+    }),
+    GoogleProvider({
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    }),
+    EmailProvider({
+      server: {
+        host: env.SMTP_HOST,
+        port: env.SMTP_PORT,
+        auth: {
+          user: env.SMTP_USER,
+          pass: env.SMTP_PASSWORD,
+        },
+      },
+      from: env.SMTP_SENDER,
+    }),
+  ],
+  callbacks: {
+    async session({ token, session }) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture;
+      }
+      return session;
+    },
+  },
+};
+```
+
+`session.ts` is where you get auth server session from. With this you can retrieve logged in user anywhere in the application. 
+```ts filename="src/lib/session.ts"
+import { getServerSession } from "next-auth/next";
+
+import { authOptions } from "@/lib/auth";
+
+export async function getCurrentUser() {
+  const session = await getServerSession(authOptions);
+  return session?.user;
+}
+```
+
+`route.t` is the API route to handle auth methods.
+```ts filename="src/app/api/auth/[...nextAuth]/route.ts"
+import NextAuth from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
+```
