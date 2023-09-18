@@ -6,13 +6,17 @@ export default {
   footer: {
     text: (
       <span>
-        MIT {new Date().getFullYear()} ©{' '}
+        MIT {new Date().getFullYear()} ©{" "}
         <a href="https://app.entapex.com" target="_blank">
           EntApex
         </a>
         .
       </span>
-    )
-  }
-  // ... other theme options
+    ),
+  },
+  head: (
+    <>
+      <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
+    </>
+  ),
 };

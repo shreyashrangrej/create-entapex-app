@@ -1,5 +1,11 @@
 {
   "index": {
     "title": "Introduction"
+  },
+  "getStarted": {
+    "title": "Get Started"
+  },
+  "Stack": {
+    "title": "Stack"
   }
 }
