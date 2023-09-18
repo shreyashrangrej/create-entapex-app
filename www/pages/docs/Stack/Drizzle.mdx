@@ -1,0 +1,156 @@
+# Drizzle ORM
+
+Drizzle ORM is a headless TypeScript ORM with a head. It is the only ORM with both relational and SQL-like query APIs providing you best of both worlds when it comes to accessing your relational data. Drizzle is lightweight, performant, typesafe, non lactose, gluten-free, flexible and serverless-ready by design.
+
+The EntApex App template is seamless integrated with DrizzleORM to use PostgreSQL database under the hood.
+
+## Drizzle ORM Documentation
+
+Click [here](https://orm.drizzle.team/docs/overview) to read more.
+
+## Files In Template
+
+1. Standard Drizzle ORM config files that comes along with the tempalte.
+
+```ts filename="drizzle.config.ts" copy
+import type { Config } from "drizzle-kit";
+
+export default {
+  schema: "./src/lib/db/schema.ts",
+  out: "./src/lib/db/migrations",
+  dbCredentials: {
+    connectionString: process.env.DATABASE_URL || "",
+  },
+  driver: "pg",
+} satisfies Config;
+```
+2. ORM Client is initialized in index.ts
+
+```ts filename="src/lib/db/index.ts" copy
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+import * as schema from "./schema";
+import { env } from "@/env.mjs";
+
+const client = postgres(env.DATABASE_URL);
+export const db = drizzle(client, { schema });
+```
+3. Schema File is where all your database schemas goes.
+
+```ts filename="src/lib/db/schema.ts"
+import {
+  timestamp,
+  pgTable,
+  text,
+  primaryKey,
+  integer,
+} from "drizzle-orm/pg-core";
+import type { AdapterAccount } from "@auth/core/adapters";
+
+export const users = pgTable("user", {
+  id: text("id").notNull().primaryKey(),
+  name: text("name"),
+  email: text("email").notNull(),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  image: text("image"),
+});
+
+export const accounts = pgTable(
+  "account",
+  {
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    type: text("type").$type<AdapterAccount["type"]>().notNull(),
+    provider: text("provider").notNull(),
+    providerAccountId: text("providerAccountId").notNull(),
+    refresh_token: text("refresh_token"),
+    access_token: text("access_token"),
+    expires_at: integer("expires_at"),
+    token_type: text("token_type"),
+    scope: text("scope"),
+    id_token: text("id_token"),
+    session_state: text("session_state"),
+  },
+  (account) => ({
+    compoundKey: primaryKey(account.provider, account.providerAccountId),
+  })
+);
+
+export const sessions = pgTable("session", {
+  sessionToken: text("sessionToken").notNull().primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expires: timestamp("expires", { mode: "date" }).notNull(),
+});
+
+export const verificationTokens = pgTable(
+  "verificationToken",
+  {
+    identifier: text("identifier").notNull(),
+    token: text("token").notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (vt) => ({
+    compoundKey: primaryKey(vt.identifier, vt.token),
+  })
+);
+```
+
+4. migrate.ts is a stand alone file to migrate the SQL migrations to database
+
+```ts filename="src/lib/db/migrate.ts" copy
+import { migrate } from "drizzle-orm/postgres-js/migrator";
+import postgres from "postgres";
+import { drizzle } from "drizzle-orm/postgres-js";
+
+import "dotenv/config";
+
+const runMigrate = async () => {
+  const connectionString = process.env.DATABASE_URL
+  
+  if (!connectionString) {
+    throw new Error("DATABASE_URL is not defined");
+  }
+
+  const connection = postgres(connectionString);
+
+  const db = drizzle(connection);
+
+  console.log("⏳ Running migrations...");
+
+  const start = Date.now();
+
+  await migrate(db, { migrationsFolder: "src/lib/db/migrations" });
+
+  const end = Date.now();
+
+  console.log(`✅ Migrations completed in ${end - start}ms`);
+
+  process.exit(0);
+};
+
+runMigrate().catch((err) => {
+  console.error("❌ Migration failed");
+  console.error(err);
+  process.exit(1);
+});
+```
+
+## Command Line
+
+1. To generate SQL migrations
+```bash copy
+npm run migrations:generate
+```
+
+2. To run the migrations across the database instance
+```bash copy
+npm run migrations:push
+```
+
+3. To drop the previous migration
+```bash copy
+npm run migrations:drop
+```
