@@ -22,6 +22,9 @@ const Profile = ({ user }: UserAccountProps) => {
         <Link href="/protected">
           <Button>Protected</Button>
         </Link>
+        <Link href="/email">
+          <Button>Email</Button>
+        </Link>
       </div>
     </>
   );
