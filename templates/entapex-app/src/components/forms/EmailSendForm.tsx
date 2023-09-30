@@ -103,7 +103,7 @@ export function EmailSendForm() {
                   <Input placeholder="Name" {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is email receiver's public display name.
+                  This is email receiver&apos;s public display name.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -118,7 +118,7 @@ export function EmailSendForm() {
                 <FormControl>
                   <Input placeholder="email@example.com" {...field} />
                 </FormControl>
-                <FormDescription>This is receiver's email.</FormDescription>
+                <FormDescription>This is receiver&apos;s email.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
