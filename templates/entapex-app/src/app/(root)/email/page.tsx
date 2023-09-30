@@ -1,47 +1,8 @@
-"use client";
 import Link from "next/link";
-import { emailSchema } from "@/lib/email/utils";
-import { useRef, useState } from "react";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
-type FormInput = z.infer<typeof emailSchema>;
-type Errors = { [K in keyof FormInput]: string[] };
+import { EmailSendForm } from "@/components/forms/EmailSendForm";
 
 export default function Page() {
-  const [sending, setSending] = useState(false);
-  const [errors, setErrors] = useState<Errors | null>(null);
-  const nameInputRef = useRef<HTMLInputElement>(null);
-  const emailInputRef = useRef<HTMLInputElement>(null);
-
-  const sendEmail = async () => {
-    setSending(true);
-    setErrors(null);
-    try {
-      const payload = emailSchema.parse({
-        name: nameInputRef.current?.value,
-        email: emailInputRef.current?.value,
-      });
-      console.log(payload);
-      const req = await fetch("/api/email", {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const { id } = await req.json();
-      if (id) alert("Successfully sent!");
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setErrors(err.flatten().fieldErrors as Errors);
-      }
-    } finally {
-      setSending(false);
-    }
-  };
   return (
     <main className="max-w-2xl mx-auto p-4 md:p-0">
       <div>
@@ -52,6 +13,7 @@ export default function Page() {
               <Link
                 className="text-primary hover:text-muted-foreground underline"
                 href="https://resend.com/signup"
+                target="_blank"
               >
                 Sign up
               </Link>{" "}
@@ -59,6 +21,7 @@ export default function Page() {
               <Link
                 className="text-primary hover:text-muted-foreground underline"
                 href="https://resend.com/login"
+                target="_blank"
               >
                 Login
               </Link>{" "}
@@ -81,28 +44,7 @@ export default function Page() {
           </ol>
         </div>
       </div>
-      <form
-        onSubmit={(e) => e.preventDefault()}
-        className="space-y-3 pt-4 border-t mt-4"
-      >
-        {errors && <p className="p-3">{JSON.stringify(errors, null, 2)}</p>}
-        <div>
-          <Label className="text-muted-foreground">Name</Label>
-          <Input type="text" placeholder="Tim" name="name" ref={nameInputRef} />
-        </div>
-        <div>
-          <Label className="text-muted-foreground">Email</Label>
-          <Input
-            type="email"
-            placeholder="tim@apple.com"
-            name="email"
-            ref={emailInputRef}
-          />
-        </div>
-        <Button onClick={() => sendEmail()} disabled={sending}>
-          {sending ? "sending..." : "Send Email"}
-        </Button>
-      </form>
+      <EmailSendForm />
     </main>
   );
 }

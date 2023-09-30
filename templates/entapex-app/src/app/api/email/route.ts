@@ -4,14 +4,14 @@ import { emailSchema } from "@/lib/email/utils";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const body = await request.json();
-  const { name, email } = emailSchema.parse(body);
+  const json = await request.json();
+  const { name, email, body } = emailSchema.parse(json);
   try {
     const data = await resend.emails.send({
       from: "EntApex App <noreply@entapex.com>",
       to: [email],
       subject: "Hello world!",
-      react: EmailTemplate({ firstName: name }),
+      react: EmailTemplate({ firstName: name, body: body }),
       text: "Email powered by Resend.",
     });
 
