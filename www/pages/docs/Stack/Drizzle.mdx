@@ -142,15 +142,15 @@ runMigrate().catch((err) => {
 
 1. To generate SQL migrations
 ```bash copy
-npm run migrations:generate
+npm run db:generate
 ```
 
 2. To run the migrations across the database instance
 ```bash copy
-npm run migrations:push
+npm run db:migrate
 ```
 
-3. To drop the previous migration
+3. To open DirzzleORM Studio
 ```bash copy
-npm run migrations:drop
+npm run db:studio
 ```
