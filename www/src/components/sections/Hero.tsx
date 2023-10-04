@@ -92,7 +92,7 @@ const Hero = () => {
           </svg>
           <Link
             className="inline-flex items-center gap-x-1.5 text-sm text-blue-600 decoration-2 hover:underline font-medium"
-            href="/documentation"
+            href="/docs/getStarted"
           >
             Installation Guide
             <svg
